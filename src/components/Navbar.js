@@ -14,9 +14,7 @@ export default function Navbar(props) {
 
   // const [ids,setIds] = useState({});
   const getIds = async (movieName) => {
-    let data = await fetch(
-      `https://movie-recom-api.herokuapp.com/getids/${movieName}`
-    );
+    let data = await fetch(`https://movie-recommender-backend-g.onrender.com/getids/${movieName}`);
     let datajson = await data.json();
     // console.log(ids);
     navigate(`/movies/${datajson.tmdb_id}`);
@@ -34,6 +32,9 @@ export default function Navbar(props) {
           onSelect={(event) => {
             setMovieName(event.target.value);
           }}
+          // onKeyDown={(e) => {
+          //   if (e.key === "Enter") return getIds(movieName);
+          // }}
           options={props.movieList}
           sx={{ width: 500, height: 45 }}
           renderInput={(params) => (

@@ -11,6 +11,7 @@ export default function MovieDetails() {
   const [cast, setCast] = useState([]);
   const [movie, setMovie] = useState([]);
   const [movies, setMovies] = useState([]);
+  const [moviegenre, setMoviegenre] = useState("");
   const param = useParams();
   const MyLoader = (props) => (
     <ContentLoader
@@ -47,24 +48,34 @@ export default function MovieDetails() {
 
     const datajson = await data.json();
     const datajson1 = await data1.json();
+    console.log(datajson1);
     let recom = await fetch(
-      "https://movie-recom-api.herokuapp.com/similarity/" + datajson1.imdb_id
+      "https://movie-recommender-backend-g.onrender.com/similarity/" + datajson1.id
     );
     let recomjson = await recom.json();
     let temp = [];
     for (let i = 0; i < recomjson.length; i++) {
-      temp.push(recomjson[i].movie_details);
+      temp.push(recomjson[i].movie_detail);
     }
     setMovies(temp);
     const m = datajson.cast;
     const m1 = datajson1;
     if (m) setCast(m.slice(0, 10));
     setMovie(m1);
+    if (m1.genres) {
+      let genre = "";
+      for (let i = 0; i < m1.genres.length; i++)
+        genre = genre + m1.genres[i].name + " | ";
+      genre = genre.substring(0, genre.length - 2);
+      setMoviegenre(genre);
+      console.log(genre);
+    }
+    console.log(recomjson)
   };
   useEffect(() => {
     setLoading(true);
     getDetails().then(() => setLoading(false));
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param.id]);
 
   if (!loading)
@@ -78,7 +89,10 @@ export default function MovieDetails() {
           <div className="over-view">
             <h2>{movie.original_title}</h2>
 
-            <p>{movie.adult ? "18+" : "U/A"}</p>
+            <p>
+              {movie.adult ? "18+" : "U/A"} &nbsp; {moviegenre}{" "}
+            </p>
+            {/* <p>Genre : {moviegenre} </p> */}
             <h3>Overview:</h3>
             <p>{movie.overview}</p>
             <p>
@@ -104,11 +118,15 @@ export default function MovieDetails() {
         </CastContainer>
 
         <H>Recommended Movies</H>
-        <MContainer>
-          {movies.map((item, idx) => {
-            return <MovieItems movieitem={item} key={idx} />;
-          })}
-        </MContainer>
+        {
+          movies.length > 0 &&
+
+          <MContainer>
+            {movies.map((item, idx) => {
+              return <MovieItems movieitem={item} key={idx} />;
+            })}
+          </MContainer>
+        }
       </div>
     );
   else
