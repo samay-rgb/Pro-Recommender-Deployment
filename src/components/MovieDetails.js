@@ -48,7 +48,7 @@ export default function MovieDetails() {
 
     const datajson = await data.json();
     const datajson1 = await data1.json();
-    console.log(datajson1);
+    //console.log(datajson1);
     let recom = await fetch(
       "https://movie-recommender-backend-g.onrender.com/similarity/" + datajson1.id
     );
@@ -68,9 +68,9 @@ export default function MovieDetails() {
         genre = genre + m1.genres[i].name + " | ";
       genre = genre.substring(0, genre.length - 2);
       setMoviegenre(genre);
-      console.log(genre);
+      //console.log(genre);
     }
-    console.log(recomjson)
+    //console.log(recomjson)
   };
   useEffect(() => {
     setLoading(true);

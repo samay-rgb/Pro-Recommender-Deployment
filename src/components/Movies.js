@@ -12,7 +12,6 @@ export default function Movies() {
     );
     let datajson = await data.json();
     let m = datajson.results;
-    // console.log("wejkdsdjklsdffjlhds");
     if (m) setMovie(m.slice(0, 15));
   };
 

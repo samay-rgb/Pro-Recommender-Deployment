@@ -1,8 +1,6 @@
 import { useState } from "react";
 import * as React from "react";
 import styled from "styled-components";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as Logo } from "../assets/logo-lg.svg";
 // import { useFormControl } from "@mui/material/FormControl";
@@ -14,28 +12,43 @@ export default function Navbar(props) {
   const [movieName, setMovieName] = useState("");
 
   // const [ids,setIds] = useState({});
-  const getIds = async (movieName) => {
-    let data = await fetch(`https://movie-recommender-backend-g.onrender.com/getids/${movieName}`);
-    let datajson = await data.json();
-    // console.log(ids);
-    navigate(`/movies/${datajson.tmdb_id}`);
-    window.location.reload();
-  };
+  // const getIds = async (movieName) => {
+  //   let data = await fetch(`https://movie-recommender-backend-g.onrender.com/getids/${movieName}`);
+  //   let datajson = await data.json();
+  //   // //console.log(ids);
+  //   navigate(`/movies/${datajson.tmdb_id}`);
+  //   window.location.reload();
+  // };
   return (
     <Container>
       <Link to="/" style={{ textDecoration: "none" }}>
         <Logo style={{ width: '9rem', height: 'auto' }} />
       </Link>
       <div style={{ display: "flex", flexFlow: "row wrap" }}>
-        <Autocomplete
+        <Input type="text" list="moviename" role={'combobox'} placeholder="Enter movie name" onChange={(e) => setMovieName(e.target.value)} value={movieName} onKeyDown={(e) => {
+          if (e.key === "Enter") navigate(`/search/${movieName}`);
+        }} />
+        {
+          <datalist id="moviename">
+            {
+              props.movieList.map((item, idx) => {
+                return <option value={item} key={idx}>{item}</option>
+              })
+            }
+          </datalist>
+
+        }
+
+        {/* <Autocomplete
           disablePortal
           id="combo-box-demo"
           onSelect={(event) => {
             setMovieName(event.target.value);
           }}
-          // onKeyDown={(e) => {
-          //   if (e.key === "Enter") return getIds(movieName);
-          // }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") return getIds(movieName);
+          }}
+
           options={props.movieList}
           sx={{ width: 500, height: 45 }}
           renderInput={(params) => (
@@ -47,9 +60,9 @@ export default function Navbar(props) {
               focused
             />
           )}
-        />
+        /> */}
 
-        <Button type="submit" onClick={() => getIds(movieName)}>
+        <Button type="submit" onClick={() => navigate(`/search/${movieName}`)}>
           <Icon
             src="https://img.icons8.com/color/48/000000/search--v2.png"
             alt=""
@@ -60,7 +73,7 @@ export default function Navbar(props) {
   );
 }
 const Container = styled.div`
-  min-height: 70px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -84,3 +97,10 @@ const Button = styled.button`
   background: transparent;
   border: none;
 `;
+const Input = styled.input`
+border: none;
+border-radius: 1rem;
+width: 20rem;
+color: black;
+padding: 12px;
+outline: none;`

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 export default function MovieItems({ movieitem }) {
-  console.log(movieitem);
+  //console.log(movieitem);
   // let rating = 5.5;
   let navigate = useNavigate();
 
@@ -29,6 +29,7 @@ export default function MovieItems({ movieitem }) {
     typeof movieitem?.vote_average !== "undefined" &&
     movieitem.vote_average !== null
   )
+    if (!movieitem?.title) return null;
     return (
       <>
         {movieitem?.title &&
