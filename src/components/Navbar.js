@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Link, useNavigate } from "react-router-dom";
+import { ReactComponent as Logo } from "../assets/logo-lg.svg";
 // import { useFormControl } from "@mui/material/FormControl";
 
 // import { orange } from "@mui/material/colors";
@@ -23,7 +24,7 @@ export default function Navbar(props) {
   return (
     <Container>
       <Link to="/" style={{ textDecoration: "none" }}>
-        <Title>ChillFlix</Title>
+        <Logo style={{ width: '9rem', height: 'auto' }} />
       </Link>
       <div style={{ display: "flex", flexFlow: "row wrap" }}>
         <Autocomplete
